@@ -40,6 +40,12 @@ function App(){
       <Route path="/signup" element={<Signup />} />
       <Route path="/search" element={<Search />} />
       <Route path="/testimonials" element={<AllTestimonials />} />
+      <Route path="/admin" element={
+    <AdminRoute>
+      <AdminPanel />
+    </AdminRoute>
+  } 
+/>
         <Route path="/" element={
           <>
             <Hero/>
