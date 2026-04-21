@@ -26,12 +26,12 @@ const AdminPanel = () => {
     if (result.success) {
       fetchTours();
       setShowForm(false);
-      setNewTour({ title: '', location: '', price: '', dates: '' });
+      setNewTour({ name: '', country: '', price: '', days: '' });
     }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this offer?")) {
+    if (window.confirm("Czy na pewno chcesz usunąć tą ofertę?")) {
       await fetch(`http://localhost/manage_trips.php?id=${id}`, { method: "DELETE" });
       fetchTours();
     }
@@ -66,16 +66,16 @@ const AdminPanel = () => {
           <table className="admin-table">
             <thead>
               <tr>
-                <th>Title</th><th>Location</th><th>Price</th><th>Dates</th><th style={{textAlign: 'right'}}>Actions</th>
+                <th>Nazwa</th><th>Kraj</th><th>Cena</th><th>Liczba Dni</th><th style={{textAlign: 'right'}}></th>
               </tr>
             </thead>
             <tbody>
               {tours.map((tour) => (
                 <tr key={tour.id}>
-                  <td>{tour.title}</td>
-                  <td>{tour.location}</td>
+                  <td>{tour.name}</td>
+                  <td>{tour.country}</td>
                   <td>{tour.price}</td> 
-                  <td>{tour.dates}</td>
+                  <td>{tour.days}</td>
                   <td className="actions">
                     <button className="btn-delete" onClick={() => handleDelete(tour.id)}>
                       <i className="fas fa-trash"></i>
