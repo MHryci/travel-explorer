@@ -26,15 +26,46 @@ useEffect(() => {
 }, []);
 
 
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
-  const newReview = { id: Date.now(), name: newName, desc: newDesc, rating: newRating, img: "..." };
-  
-  const updatedLocal = [newReview, ...JSON.parse(localStorage.getItem("my_custom_reviews") || "[]")];
-  localStorage.setItem("my_custom_reviews", JSON.stringify(updatedLocal));
-  
-  setReviews([newReview, ...reviews]);
-  setNewName(""); setNewDesc("");
+
+  const reviewToSend = {
+    name: newName,
+    rating: parseInt(newRating),
+    description: newDesc // PHP spodziewa się 'description'
+  };
+
+  try {
+    const res = await fetch("http://localhost/manage_reviews.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(reviewToSend)
+    });
+
+    const result = await res.json();
+
+    if (result.success) {
+      // Opcja A: Ponowne pobranie wszystkich opinii z bazy (najbezpieczniejsze)
+      const refreshRes = await fetch("http://localhost/get_testimonials.php");
+      const newData = await refreshRes.json();
+      const mappedData = newData.map(item => ({
+        ...item,
+        desc: item.description 
+      }));
+      setReviews(mappedData);
+
+      // Czyszczenie formularza
+      setNewName("");
+      setNewDesc("");
+      setNewRating(5);
+      alert("Opinia została dodana!");
+    } else {
+      alert("Błąd serwera: " + result.error);
+    }
+  } catch (err) {
+    console.error("Błąd wysyłania:", err);
+    alert("Nie udało się połączyć z serwerem.");
+  }
 };
   const renderStars = (rating) => {
     return "★".repeat(rating) + "☆".repeat(5 - rating);
