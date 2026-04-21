@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Search from "./pages/Search";
 import AllTestimonials from "./pages/AllTestimonials";
+import AdminRoute from "./components/AdminRoute";
 import "./App.css";
 
 
