@@ -2,52 +2,84 @@ import React, { useState, useEffect } from 'react';
 import './AdminPanel.css';
 
 const AdminPanel = () => {
-  // Przykładowe dane (docelowo pobierzesz je z bazy przez useEffect)
-  const [tours, setTours] = useState([
-    { id: 1, tytul: "Wyprawa w Alpy", miejsce: "Szwajcaria, Alpy", cena: 1200, terminy: "10.07.2024 - 17.07.2024" },
-    { id: 2, tytul: "Słoneczne wybrzeże", miejsce: "Chorwacja, Dalmacja", cena: 850, terminy: "01.08.2024 - 08.08.2024" },
-  ]);
+  const [tours, setTours] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  // Zmienione na angielskie nazwy pól
+  const [newTour, setNewTour] = useState({ title: '', location: '', price: '', dates: '' });
+
+  const fetchTours = async () => {
+    const res = await fetch("http://localhost/get_trips.php");
+    const data = await res.json();
+    setTours(data);
+  };
+
+  useEffect(() => { fetchTours(); }, []);
+
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    const res = await fetch("http://localhost/manage_trips.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newTour)
+    });
+    const result = await res.json();
+    if (result.success) {
+      fetchTours();
+      setShowForm(false);
+      setNewTour({ title: '', location: '', price: '', dates: '' });
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this offer?")) {
+      await fetch(`http://localhost/manage_trips.php?id=${id}`, { method: "DELETE" });
+      fetchTours();
+    }
+  };
 
   return (
     <div className="admin-container">
-      {/* SIDEBAR */}
       <aside className="admin-sidebar">
-        <button className="sidebar-btn active">
-          <i className="fas fa-th-list"></i> Zarządzaj ofertami
-        </button>
-        <button className="sidebar-btn">
-          <i className="fas fa-calendar-check"></i> Zarządzaj rezerwacjami
-        </button>
+        <button className="sidebar-btn active">Manage Offers</button>
+        <button className="sidebar-btn">Bookings</button>
       </aside>
 
-      {/* MAIN CONTENT */}
       <main className="admin-main">
         <header className="admin-header">
-          <h1>Zarządzaj Ofertami</h1>
-          <button className="btn-add">+ Dodaj nową ofertę</button>
+          <h1>Manage Tours</h1>
+          <button className="btn-add" onClick={() => setShowForm(!showForm)}>
+            {showForm ? "Cancel" : "+ Add New Offer"}
+          </button>
         </header>
+
+        {showForm && (
+          <form className="admin-form" onSubmit={handleAdd}>
+            <input placeholder="Title" value={newTour.title} onChange={e => setNewTour({...newTour, title: e.target.value})} required />
+            <input placeholder="Location" value={newTour.location} onChange={e => setNewTour({...newTour, location: e.target.value})} required />
+            <input type="number" placeholder="Price" value={newTour.price} onChange={e => setNewTour({...newTour, price: e.target.value})} required />
+            <input placeholder="Dates (e.g. 10.05 - 20.05)" value={newTour.dates} onChange={e => setNewTour({...newTour, dates: e.target.value})} required />
+            <button type="submit" className="btn-save">Save Offer</button>
+          </form>
+        )}
 
         <section className="table-container">
           <table className="admin-table">
             <thead>
               <tr>
-                <th>Tytuł</th>
-                <th>Lokalizacja</th>
-                <th>Cena</th>
-                <th>Terminy</th>
-                <th style={{textAlign: 'right'}}>Akcje</th>
+                <th>Title</th><th>Location</th><th>Price</th><th>Dates</th><th style={{textAlign: 'right'}}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {tours.map((tour) => (
                 <tr key={tour.id}>
-                  <td>{tour.tytul}</td>
-                  <td>{tour.miejsce}</td>
-                  <td>{tour.cena} PLN</td>
-                  <td>{tour.terminy}</td>
+                  <td>{tour.title}</td>
+                  <td>{tour.location}</td>
+                  <td>{tour.price}</td> 
+                  <td>{tour.dates}</td>
                   <td className="actions">
-                    <button className="btn-edit"><i className="fas fa-edit"></i></button>
-                    <button className="btn-delete"><i className="fas fa-trash"></i></button>
+                    <button className="btn-delete" onClick={() => handleDelete(tour.id)}>
+                      <i className="fas fa-trash"></i>
+                    </button>
                   </td>
                 </tr>
               ))}
