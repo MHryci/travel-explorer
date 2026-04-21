@@ -9,64 +9,54 @@ import Booking from "./pages/Booking";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Search from "./pages/Search";
+import Profile from "./pages/Profile"; // 1. IMPORTUJEMY PROFIL
 import AllTestimonials from "./pages/AllTestimonials";
 import AdminRoute from "./components/AdminRoute";
 import AdminPanel from "./components/AdminPanel";
 import "./App.css";
 
-
+// Komponent Home (Strona główna)
 function Home() {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const handleSearch = (filters) => {
-
-    setSearchQuery(filters.destination.toLowerCase());
-  };
   return (
     <>
-      <Hero onSearch={handleSearch} />
-      <Offers filter={searchQuery} />
+      <Hero />
+      <Offers />
+      <Testimonials />
     </>
   );
 }
-function App(){
 
-  return(
-
+function App() {
+  return (
     <div>
-
-      <Navbar/>
+      <Navbar />
 
       <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/search" element={<Search />} />
-      <Route path="/testimonials" element={<AllTestimonials />} />
-      <Route path="/admin" element={
-    <AdminRoute>
-      <AdminPanel />
-    </AdminRoute>
-  } 
-/>
-        <Route path="/" element={
-          <>
-            <Hero/>
-            <Offers/>
-            <Testimonials/>
-          </>
-        }/>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/testimonials" element={<AllTestimonials />} />
+        
+        {/* 2. DODAJEMY TRASĘ PROFILU */}
+        <Route path="/profile" element={<Profile />} />
 
-        <Route path="/" element={<Offers/>}/>
-        <Route path="/pages/booking/:id" element={<Booking/>}/>
+        {/* Poprawiona ścieżka do bookowania (bez /pages/) */}
+        <Route path="/booking/:id" element={<Booking />} />
 
+        <Route 
+          path="/admin" 
+          element={
+            <AdminRoute>
+              <AdminPanel />
+            </AdminRoute>
+          } 
+        />
       </Routes>
 
-      <Footer/>
-
+      <Footer />
     </div>
-
-  )
-
+  );
 }
 
-export default App
+export default App;
