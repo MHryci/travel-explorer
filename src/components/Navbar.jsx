@@ -22,7 +22,9 @@ function Navbar() {
 
   return (
     <nav className="navbar">
-
+      {user && user.rola === 'admin' && (
+  <li><Link to="/admin" className="admin-link">Panel Admina</Link></li>
+)}
       <div className="logo" onClick={() => navigate("/")} style={{ cursor: 'pointer' }}>
         Travel Explorer
       </div>
