@@ -69,6 +69,35 @@ const AdminPanel = () => {
     if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
     return 0;
   });
+const [revSort, setRevSort] = useState({ key: 'id', direction: 'asc' });
+
+const sortedReviews = [...reviews].sort((a, b) => {
+  let aVal = a[revSort.key];
+  let bVal = b[revSort.key];
+
+  // Specjalna obsługa dla oceny (liczba)
+  if (revSort.key === 'rating') {
+    aVal = parseInt(aVal) || 0;
+    bVal = parseInt(bVal) || 0;
+  } else {
+    // Standardowa obsługa dla tekstu (name, description)
+    aVal = String(aVal).toLowerCase();
+    bVal = String(bVal).toLowerCase();
+  }
+
+  if (aVal < bVal) return revSort.direction === 'asc' ? -1 : 1;
+  if (aVal > bVal) return revSort.direction === 'asc' ? 1 : -1;
+  return 0;
+});
+
+// Funkcja pomocnicza do zmiany sortowania opinii
+const requestRevSort = (key) => {
+  let direction = 'asc';
+  if (revSort.key === key && revSort.direction === 'asc') {
+    direction = 'desc';
+  }
+  setRevSort({ key, direction });
+};
 
   return (
     <div className="admin-container">
@@ -145,31 +174,33 @@ const AdminPanel = () => {
             <div className="table-container">
               <table className="admin-table">
                 <thead>
-                  <tr>
-                    <th>Avatar</th>
-                    <th>Użytkownik</th>
-                    <th>Ocena</th>
-                    <th>Opis</th>
-                    <th style={{textAlign: 'right'}}>Akcje</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {reviews.map(rev => (
-                    <tr key={rev.id}>
-                      <td>
-                        <img src={rev.img} alt="user" className="admin-avatar" />
-                      </td>
-                      <td>{rev.name}</td>
-                      <td style={{color: '#f59e0b'}}>{'★'.repeat(rev.rating)}</td>
-                      <td className="comment-cell" title={rev.description}>{rev.description}</td>
-                      <td className="actions">
-                        <button className="btn-delete" onClick={() => deleteReview(rev.id)}>
-                          <i className="fas fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
+  <tr>
+    <th>Avatar</th>
+    <th onClick={() => requestRevSort('name')} className="sortable">
+      Użytkownik {revSort.key === 'name' ? (revSort.direction === 'asc' ? '↑' : '↓') : ''}
+    </th>
+    <th onClick={() => requestRevSort('rating')} className="sortable">
+      Ocena {revSort.key === 'rating' ? (revSort.direction === 'asc' ? '↑' : '↓') : ''}
+    </th>
+    <th>Opis</th>
+    <th style={{textAlign: 'right'}}>Akcje</th>
+  </tr>
+</thead>
+<tbody>
+  {sortedReviews.map(rev => (
+    <tr key={rev.id}>
+      <td><img src={rev.img} alt="user" className="admin-avatar" /></td>
+      <td>{rev.name}</td>
+      <td style={{color: '#f59e0b'}}>{'★'.repeat(rev.rating)}</td>
+      <td className="comment-cell">{rev.description}</td>
+      <td className="actions">
+        <button className="btn-delete" onClick={() => deleteReview(rev.id)}>
+          <i className="fas fa-trash"></i>
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
               </table>
             </div>
           </section>
