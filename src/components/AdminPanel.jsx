@@ -54,10 +54,10 @@ const AdminPanel = () => {
 
         {showForm && (
           <form className="admin-form" onSubmit={handleAdd}>
-            <input placeholder="Title" value={newTour.title} onChange={e => setNewTour({...newTour, title: e.target.value})} required />
-            <input placeholder="Location" value={newTour.location} onChange={e => setNewTour({...newTour, location: e.target.value})} required />
-            <input type="number" placeholder="Price" value={newTour.price} onChange={e => setNewTour({...newTour, price: e.target.value})} required />
-            <input placeholder="Dates (e.g. 10.05 - 20.05)" value={newTour.dates} onChange={e => setNewTour({...newTour, dates: e.target.value})} required />
+            <input  placeholder="Name" value={newTour.name} onChange={e => setNewTour({...newTour, name: e.target.value})} />
+<input placeholder="Country" value={newTour.country} onChange={e => setNewTour({...newTour, country: e.target.value})} />
+<input placeholder="Price" value={newTour.price} onChange={e => setNewTour({...newTour, price: e.target.value})} />
+<input placeholder="Days" value={newTour.days} onChange={e => setNewTour({...newTour, days: e.target.value})} />
             <button type="submit" className="btn-save">Save Offer</button>
           </form>
         )}
