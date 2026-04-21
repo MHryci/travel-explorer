@@ -42,7 +42,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
 
         {/* Poprawiona ścieżka do bookowania (bez /pages/) */}
-        <Route path="/booking/:id" element={<Booking />} />
+        <Route path="/pages/booking/:id" element={<Booking />} />
 
         <Route 
           path="/admin" 

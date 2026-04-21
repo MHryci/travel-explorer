@@ -37,7 +37,7 @@ function Profile() {
             {bookings.map(booking => (
               <div key={booking.booking_id} className="booking-card" style={{
                 display: 'flex', 
-                background: '#f8f9fa', 
+                background: '#212668', 
                 borderRadius: '12px', 
                 overflow: 'hidden',
                 boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
@@ -53,7 +53,7 @@ function Profile() {
             ))}
           </div>
         ) : (
-          <div style={{textAlign: 'center', padding: '40px', background: '#eee', borderRadius: '12px'}}>
+          <div style={{textAlign: 'center', padding: '40px', background: '#1d3ed1', borderRadius: '12px'}}>
             <p>Nie masz jeszcze żadnych rezerwacji.</p>
           </div>
         )}

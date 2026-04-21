@@ -42,8 +42,8 @@ function Navbar() {
       <div className="nav-buttons">
         {user ? (
 
-          <div className="user-controls">
-            <span className="welcome-text">Cześć, <strong>{user.username}</strong>!</span>
+          <div className="user-controls"><Link to="/profile" className="nav-link">
+            <span className="welcome-text">Cześć, <strong>{user.username}</strong>!</span></Link>
             <button onClick={handleLogout} className="logout-btn">
               Wyloguj
             </button>
