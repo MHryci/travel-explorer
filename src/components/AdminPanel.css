@@ -106,6 +106,45 @@
   transition: 0.2s;
   color: white;
 }
+.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+
+.sortable:hover {
+  background-color: #3b82f6 !important; /* Podświetlenie na niebiesko przy hoverze */
+  color: white !important;
+}
+
+/* Dodaj styl dla formularza, jeśli jeszcze go nie dopracowałeś */
+.admin-form {
+  background: #24262d;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.admin-form input {
+  background: #1a1c23;
+  border: 1px solid #3f414a;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.btn-save {
+  background: #10b981; /* Zielony przycisk zapisu */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
 .btn-edit { background-color: #374151; }
 .btn-delete { background-color: #991b1b; } /* Ciemna czerwień */

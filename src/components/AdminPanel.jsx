@@ -4,8 +4,10 @@ import './AdminPanel.css';
 const AdminPanel = () => {
   const [tours, setTours] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  // Zmienione na angielskie nazwy pól
-  const [newTour, setNewTour] = useState({ title: '', location: '', price: '', dates: '' });
+  const [newTour, setNewTour] = useState({ name: '', country: '', price: '', days: '' });
+  
+  // NOWE: Stan sortowania
+  const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'asc' });
 
   const fetchTours = async () => {
     const res = await fetch("http://localhost/get_trips.php");
@@ -15,6 +17,36 @@ const AdminPanel = () => {
 
   useEffect(() => { fetchTours(); }, []);
 
+  // LOGIKA SORTOWANIA
+  const sortedTours = [...tours].sort((a, b) => {
+  let aValue = a[sortConfig.key];
+  let bValue = b[sortConfig.key];
+
+  // Wymuszamy zamianę na liczby dla kolumn numerycznych
+  if (sortConfig.key === 'price' || sortConfig.key === 'days') {
+    // parseFloat usunie też ewentualne " zł" czy " PLN" jeśli tam są
+    aValue = parseFloat(String(aValue).replace(/[^\d.-]/g, '')) || 0;
+    bValue = parseFloat(String(bValue).replace(/[^\d.-]/g, '')) || 0;
+  } else {
+    // Dla nazw (tekstu) ignorujemy wielkość liter
+    aValue = String(aValue).toLowerCase();
+    bValue = String(bValue).toLowerCase();
+  }
+
+  if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+  if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+  return 0;
+});
+
+  const requestSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  // Reszta funkcji (handleAdd, handleDelete) pozostaje bez zmian...
   const handleAdd = async (e) => {
     e.preventDefault();
     const res = await fetch("http://localhost/manage_trips.php", {
@@ -31,7 +63,7 @@ const AdminPanel = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Czy na pewno chcesz usunąć tą ofertę?")) {
+    if (window.confirm("Are you sure?")) {
       await fetch(`http://localhost/manage_trips.php?id=${id}`, { method: "DELETE" });
       fetchTours();
     }
@@ -54,10 +86,10 @@ const AdminPanel = () => {
 
         {showForm && (
           <form className="admin-form" onSubmit={handleAdd}>
-            <input  placeholder="Name" value={newTour.name} onChange={e => setNewTour({...newTour, name: e.target.value})} />
-<input placeholder="Country" value={newTour.country} onChange={e => setNewTour({...newTour, country: e.target.value})} />
-<input placeholder="Price" value={newTour.price} onChange={e => setNewTour({...newTour, price: e.target.value})} />
-<input placeholder="Days" value={newTour.days} onChange={e => setNewTour({...newTour, days: e.target.value})} />
+            <input placeholder="Name" value={newTour.name} onChange={e => setNewTour({...newTour, name: e.target.value})} required />
+            <input placeholder="Country" value={newTour.country} onChange={e => setNewTour({...newTour, country: e.target.value})} required />
+            <input type="number" placeholder="Price" value={newTour.price} onChange={e => setNewTour({...newTour, price: e.target.value})} required />
+            <input type="number" placeholder="Days" value={newTour.days} onChange={e => setNewTour({...newTour, days: e.target.value})} required />
             <button type="submit" className="btn-save">Save Offer</button>
           </form>
         )}
@@ -66,15 +98,28 @@ const AdminPanel = () => {
           <table className="admin-table">
             <thead>
               <tr>
-                <th>Nazwa</th><th>Kraj</th><th>Cena</th><th>Liczba Dni</th><th style={{textAlign: 'right'}}></th>
+                {/* Nagłówki z funkcją sortowania */}
+                <th onClick={() => requestSort('name')} className="sortable">
+                  Title {sortConfig.key === 'name' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+                </th>
+                <th onClick={() => requestSort('country')} className="sortable">
+                  Location {sortConfig.key === 'country' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+                </th>
+                <th onClick={() => requestSort('price')} className="sortable">
+                  Price {sortConfig.key === 'price' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+                </th>
+                <th onClick={() => requestSort('days')} className="sortable">
+                  Days {sortConfig.key === 'days' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+                </th>
+                <th style={{textAlign: 'right'}}>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {tours.map((tour) => (
+              {sortedTours.map((tour) => (
                 <tr key={tour.id}>
                   <td>{tour.name}</td>
                   <td>{tour.country}</td>
-                  <td>{tour.price}</td> 
+                  <td>{tour.price}</td>
                   <td>{tour.days}</td>
                   <td className="actions">
                     <button className="btn-delete" onClick={() => handleDelete(tour.id)}>
