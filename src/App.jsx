@@ -11,6 +11,7 @@ import Signup from "./pages/Signup";
 import Search from "./pages/Search";
 import AllTestimonials from "./pages/AllTestimonials";
 import AdminRoute from "./components/AdminRoute";
+import AdminPanel from "./components/AdminPanel";
 import "./App.css";
 
 
