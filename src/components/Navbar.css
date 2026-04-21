@@ -1,0 +1,29 @@
+.navbar-admin-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white !important; /* Wymuszenie koloru białego */
+  border-radius: 50px; /* Zaokrąglone końce */
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-admin-btn i {
+  font-size: 1rem;
+}
+
+.navbar-admin-btn:hover {
+  transform: translateY(-2px); /* Delikatne uniesienie */
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+  filter: brightness(1.1);
+}
+
+.navbar-admin-btn:active {
+  transform: translateY(0);
+}

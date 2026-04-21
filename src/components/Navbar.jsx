@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
+import './Navbar.css';
 function Navbar() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -23,7 +23,10 @@ function Navbar() {
   return (
     <nav className="navbar">
       {user && user.role === 'admin' && (
-  <li><Link to="/admin" className="admin-link">Panel Admina</Link></li>
+  <Link to="/admin" className="navbar-admin-btn">
+  <i className="fas fa-user-shield"></i>
+  <span>Panel Admina</span>
+</Link>
 )}
       <div className="logo" onClick={() => navigate("/")} style={{ cursor: 'pointer' }}>
         Travel Explorer
