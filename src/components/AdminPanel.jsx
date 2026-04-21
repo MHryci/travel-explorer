@@ -6,7 +6,7 @@ const AdminPanel = () => {
   const [tours, setTours] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [newTour, setNewTour] = useState({ name: '', country: '', price: '', days: '' });
+  const [newTour, setNewTour] = useState({ name: '', country: '', price: '', days: '' , img: ''});
   const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'asc' });
 
   // POBIERANIE DANYCH
@@ -129,13 +129,22 @@ const requestRevSort = (key) => {
             </header>
 
             {showForm && (
-              <form className="admin-form" onSubmit={handleAddTour}>
-                <input placeholder="Nazwa" value={newTour.name} onChange={e => setNewTour({...newTour, name: e.target.value})} required />
-                <input placeholder="Kraj" value={newTour.country} onChange={e => setNewTour({...newTour, country: e.target.value})} required />
-                <input type="number" placeholder="Cena" value={newTour.price} onChange={e => setNewTour({...newTour, price: e.target.value})} required />
-                <input placeholder="Dni (liczba)" value={newTour.days} onChange={e => setNewTour({...newTour, days: e.target.value})} required />
-                <button type="submit" className="btn-save">Zapisz</button>
-              </form>
+  <form className="admin-form" onSubmit={handleAddTour}>
+    <input placeholder="Nazwa" value={newTour.name} onChange={e => setNewTour({...newTour, name: e.target.value})} required />
+    <input placeholder="Kraj" value={newTour.country} onChange={e => setNewTour({...newTour, country: e.target.value})} required />
+    <input type="number" placeholder="Cena" value={newTour.price} onChange={e => setNewTour({...newTour, price: e.target.value})} required />
+    <input placeholder="Dni" value={newTour.days} onChange={e => setNewTour({...newTour, days: e.target.value})} required />
+    
+    {/* NOWE POLE NA LINK DO ZDJĘCIA */}
+    <input 
+      placeholder="Link do zdjęcia (URL)" 
+      value={newTour.img} 
+      onChange={e => setNewTour({...newTour, img: e.target.value})} 
+      required 
+    />
+    
+    <button type="submit" className="btn-save">Zapisz</button>
+  </form>
             )}
 
             <div className="table-container">

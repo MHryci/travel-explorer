@@ -46,7 +46,14 @@ function Offers({ filter }) {
 
           <div className="card" key={trip.id}>
             <div className="image-container">
-                <img src={trip.img} alt={trip.country}/>
+                <img 
+  src={trip.img} 
+  alt={trip.name}
+  onError={(e) => {
+    e.target.onerror = null; 
+    e.target.src = "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=1000"; // Obrazek zastępczy
+  }}
+/>
                 <h3 className="trip-title">{trip.name}</h3>
             </div>
             <p className="trip-price">Od {trip.price}</p>
