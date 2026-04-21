@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import "./Booking.css";
 
 function Booking() {
   const { id } = useParams();
@@ -87,26 +88,29 @@ function Booking() {
             Cena: {trip.price} PLN
           </p>
           
-          <div className="booking-form" style={{background: '#3252bb', padding: '20px', borderRadius: '10px'}}>
-            <h3>Zarezerwuj teraz</h3>
-            
-            {userData ? (
-              <div className="user-confirm-info" style={{marginBottom: '15px'}}>
-                <p>Rezerwujesz jako: <strong>{userData.username}</strong></p>
-                <p style={{fontSize: '0.9rem', color: '#666'}}>Email: {userData.email}</p>
-                <button onClick={handleBook} className="book-button">
-                   Potwierdzam rezerwację
-                </button>
-              </div>
-            ) : (
-              <div className="login-prompt">
-                <p>Aby dokonać rezerwacji, musisz być zalogowany.</p>
-                <button onClick={() => navigate("/login")} className="book-button">
-                  Zaloguj się
-                </button>
-              </div>
-            )}
-          </div>
+          <div className="booking-panel">
+  <h3>Zarezerwuj teraz</h3>
+  
+  {userData ? (
+    <div className="user-confirm-info">
+      <div className="user-details">
+        <p>Rezerwujesz jako:</p>
+        <strong>{userData.username}</strong>
+        <span className="user-email">{userData.email}</span>
+      </div>
+      <button onClick={handleBook} className="confirm-btn">
+        Potwierdzam rezerwację
+      </button>
+    </div>
+  ) : (
+    <div className="login-prompt">
+      <p>Zaloguj się, aby sfinalizować rezerwację.</p>
+      <button onClick={() => navigate("/login")} className="confirm-btn secondary">
+        Zaloguj się
+      </button>
+    </div>
+  )}
+</div>
         </div>
       </div>
     </div>

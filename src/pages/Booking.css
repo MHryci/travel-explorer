@@ -1,0 +1,76 @@
+/* Kontener panelu */
+.booking-panel {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  padding: 30px;
+  border-radius: 16px;
+  color: white;
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+  text-align: center;
+}
+
+.booking-panel h3 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+/* Sekcja z danymi użytkownika */
+.user-details {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  backdrop-filter: blur(5px);
+}
+
+.user-details p {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+.user-details strong {
+  display: block;
+  font-size: 1.2rem;
+}
+
+.user-email {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* Nowoczesny przycisk */
+.confirm-btn {
+  background: white;
+  color: #1e3a8a;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.confirm-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background: #f8fafc;
+}
+
+.confirm-btn:active {
+  transform: translateY(-1px);
+}
+
+.confirm-btn.secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.confirm-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
